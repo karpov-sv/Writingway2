@@ -145,6 +145,7 @@ function createAppState() {
         summaryTargetChapterId: null,
         selectedSummaryPromptId: null,
         showSummaryPromptList: false,
+        isSummarizing: false,
 
         // ========== Scene Tags ==========
         sceneTags: '', // Comma-separated tags for current scene

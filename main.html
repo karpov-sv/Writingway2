@@ -790,10 +790,13 @@
                                     👁️
                                 </button>
 
-                                <button class="btn btn-secondary" @click="generateFromBeat"
+                                <button class="btn btn-secondary generate-btn" @click="generateFromBeat"
+                                    :class="{ 'is-generating': isGenerating }"
                                     :disabled="!beatInput || isGenerating || aiStatus !== 'ready'"
-                                    title="Generate Text">
-                                    ✨
+                                    :title="isGenerating ? 'Generating text...' : 'Generate Text'"
+                                    :aria-busy="isGenerating ? 'true' : 'false'" aria-label="Generate Text">
+                                    <span x-show="!isGenerating" aria-hidden="true">✨</span>
+                                    <span x-show="isGenerating" class="generate-btn-spinner" aria-hidden="true"></span>
                                 </button>
                             </div>
 
@@ -1444,8 +1447,17 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-secondary"
-                            @click="summaryTargetChapterId ? summarizeChapter() : summarizeScene()">Summarize</button>
+                        <button class="btn btn-secondary summarize-btn"
+                            :class="{ 'is-generating': isSummarizing }" :disabled="isSummarizing"
+                            :title="isSummarizing ? 'Summarizing...' : 'Summarize'"
+                            :aria-busy="isSummarizing ? 'true' : 'false'"
+                            @click="summaryTargetChapterId ? summarizeChapter() : summarizeScene()">
+                            <span x-show="!isSummarizing">Summarize</span>
+                            <span x-show="isSummarizing" style="display:inline-flex;align-items:center;gap:6px;">
+                                <span class="generate-btn-spinner" aria-hidden="true"></span>
+                                <span>Summarizing...</span>
+                            </span>
+                        </button>
                         <button class="btn btn-primary"
                             @click="summaryTargetChapterId ? saveChapterSummary() : saveSceneSummary()">Save</button>
                     </div>

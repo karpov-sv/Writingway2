@@ -591,6 +591,8 @@ document.addEventListener('alpine:init', () => {
 
             // Placeholder: generate a quick summary from the scene content (client-side heuristic)
             async summarizeScene() {
+                if (this.isSummarizing) return;
+                this.isSummarizing = true;
                 try {
                     const id = this.summaryTargetSceneId;
                     if (!id) return;
@@ -654,6 +656,8 @@ document.addEventListener('alpine:init', () => {
                     this.summaryText = summary;
                 } catch (e) {
                     console.error('summarizeScene error', e);
+                } finally {
+                    this.isSummarizing = false;
                 }
             },
 
@@ -736,6 +740,8 @@ document.addEventListener('alpine:init', () => {
 
             // Generate chapter summary from all scene summaries in the chapter
             async summarizeChapter() {
+                if (this.isSummarizing) return;
+                this.isSummarizing = true;
                 try {
                     const id = this.summaryTargetChapterId;
                     if (!id) return;
@@ -798,6 +804,8 @@ document.addEventListener('alpine:init', () => {
                     this.summaryText = sceneSummaries;
                 } catch (e) {
                     console.error('summarizeChapter error', e);
+                } finally {
+                    this.isSummarizing = false;
                 }
             },
 
