@@ -184,6 +184,35 @@
         },
 
         /**
+         * Build chat-style messages for rewrite requests.
+         * Uses selected rewrite prompt's systemContent when available.
+         * @param {Object} app - Alpine app instance
+         * @returns {Array} Messages array [{role, content}, ...]
+         */
+        buildRewriteMessages(app) {
+            const userPrompt = this.buildRewritePrompt(app);
+            let systemPrompt = 'You are a careful writing editor. Rewrite the text according to the user instructions while preserving core meaning, facts, and narrative continuity. Return only the rewritten text.';
+
+            try {
+                if (app.selectedRewritePromptId) {
+                    const selected = (app.prompts || []).find(p =>
+                        p.id === app.selectedRewritePromptId && p.category === 'rewrite'
+                    );
+                    if (selected && selected.systemContent && selected.systemContent.trim()) {
+                        systemPrompt = selected.systemContent.trim();
+                    }
+                }
+            } catch (e) {
+                // Keep default system prompt
+            }
+
+            return [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
+            ];
+        },
+
+        /**
          * Perform the rewrite operation using AI
          * @param {Object} app - Alpine app instance
          */
@@ -195,8 +224,8 @@
                 }
                 app.rewriteOutput = '';
                 app.rewriteInProgress = true;
-                const prompt = this.buildRewritePrompt(app);
-                const result = await window.Generation.streamGeneration(prompt, (token) => {
+                const messages = this.buildRewriteMessages(app);
+                const result = await window.Generation.streamGeneration(messages, (token) => {
                     app.rewriteOutput += token;
                 }, app);
                 app.rewriteInProgress = false;
@@ -274,7 +303,6 @@
         discardRewrite(app) {
             app.showRewriteModal = false;
             app.showRewritePromptList = false;
-            app.selectedRewritePromptId = null;
             app.rewriteOriginalText = '';
             app.rewriteOutput = '';
             app.rewritePromptPreview = '';

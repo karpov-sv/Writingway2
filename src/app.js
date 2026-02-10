@@ -1160,6 +1160,16 @@ document.addEventListener('alpine:init', () => {
                 window.ProjectManager.saveSelectedProsePrompt(this, id);
             },
 
+            // Load persisted rewrite prompt selection for the current project (localStorage key per project)
+            async loadSelectedRewritePrompt() {
+                await window.ProjectManager.loadSelectedRewritePrompt(this);
+            },
+
+            // Persist selected rewrite prompt id per project
+            saveSelectedRewritePrompt(id) {
+                window.ProjectManager.saveSelectedRewritePrompt(this, id);
+            },
+
             async renameCurrentProject() {
                 await window.ProjectManager.renameCurrentProject(this, this.renameProjectName);
             },
@@ -1272,6 +1282,7 @@ document.addEventListener('alpine:init', () => {
                 if (window.Prompts && typeof window.Prompts.loadPrompts === 'function') {
                     await window.Prompts.loadPrompts(this);
                     try { await this.loadSelectedProsePrompt(); } catch (e) { /* ignore */ }
+                    try { await this.loadSelectedRewritePrompt(); } catch (e) { /* ignore */ }
                     return;
                 }
                 // Fallback: no-op

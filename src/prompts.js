@@ -78,6 +78,9 @@
                 if (app && app.selectedProsePromptId === id && typeof app.saveSelectedProsePrompt === 'function') {
                     app.saveSelectedProsePrompt(null);
                 }
+                if (app && app.selectedRewritePromptId === id && typeof app.saveSelectedRewritePrompt === 'function') {
+                    app.saveSelectedRewritePrompt(null);
+                }
             } catch (e) { /* ignore */ }
             await loadPrompts(app);
         } catch (e) {

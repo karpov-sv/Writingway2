@@ -162,6 +162,8 @@
             await app.loadPrompts();
             // restore prose prompt selection for this project
             try { await this.loadSelectedProsePrompt(app); } catch (e) { /* ignore */ }
+            // restore rewrite prompt selection for this project
+            try { await this.loadSelectedRewritePrompt(app); } catch (e) { /* ignore */ }
             // Load workshop sessions for this project
             try { await app.loadWorkshopSessions(); } catch (e) { console.error('Failed to load workshop sessions:', e); }
             // Load selected workshop prompt
@@ -235,6 +237,60 @@
                 } else {
                     localStorage.setItem(key, id);
                     app.selectedProsePromptId = id;
+                }
+            } catch (e) { /* ignore */ }
+        },
+
+        /**
+         * Load persisted rewrite prompt selection for the current project
+         * @param {Object} app - Alpine app instance
+         */
+        async loadSelectedRewritePrompt(app) {
+            try {
+                if (!app.currentProject || !app.currentProject.id) {
+                    app.selectedRewritePromptId = '';
+                    return;
+                }
+                const key = `writingway:proj:${app.currentProject.id}:rewritePrompt`;
+                const raw = localStorage.getItem(key);
+                if (!raw) {
+                    app.selectedRewritePromptId = '';
+                    return;
+                }
+                // Ensure the stored id actually exists in the DB and belongs to rewrite category
+                try {
+                    const dbRow = await db.prompts.get(raw);
+                    if (dbRow && dbRow.category === 'rewrite') {
+                        app.selectedRewritePromptId = raw;
+                        return;
+                    }
+                } catch (e) {
+                    // ignore DB errors and fallthrough to clearing
+                }
+
+                // Fallback: check in-memory prompts list
+                const exists = (app.prompts || []).some(p => p.id === raw && p.category === 'rewrite');
+                app.selectedRewritePromptId = exists ? raw : '';
+            } catch (e) {
+                app.selectedRewritePromptId = '';
+            }
+        },
+
+        /**
+         * Persist selected rewrite prompt id per project
+         * @param {Object} app - Alpine app instance
+         * @param {string} id - Prompt ID to save
+         */
+        saveSelectedRewritePrompt(app, id) {
+            try {
+                if (!app.currentProject || !app.currentProject.id) return;
+                const key = `writingway:proj:${app.currentProject.id}:rewritePrompt`;
+                if (!id) {
+                    localStorage.removeItem(key);
+                    app.selectedRewritePromptId = '';
+                } else {
+                    localStorage.setItem(key, id);
+                    app.selectedRewritePromptId = id;
                 }
             } catch (e) { /* ignore */ }
         },

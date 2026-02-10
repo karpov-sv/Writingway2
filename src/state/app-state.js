@@ -264,7 +264,7 @@ function createAppState() {
         rewriteInProgress: false,
         rewritePromptPreview: '',
         showRewritePromptList: false,
-        selectedRewritePromptId: null,
+        selectedRewritePromptId: '', // Selected rewrite prompt for rewrite modal (empty string = fallback)
         // Track last mouseup info to avoid treating selection mouseup as an explicit click
         _lastMouseUpTargetTag: null,
         _lastMouseUpTime: 0,
