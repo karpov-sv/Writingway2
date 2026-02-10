@@ -491,13 +491,13 @@ body {
 
 /* Compendium entry items (individual entries in a category) */
 .comp-entry {
-    padding: 10px 12px;
+    padding: 12px 15px;
     border-radius: 6px;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     cursor: pointer;
     background: transparent;
-    color: var(--text-secondary);
     transition: all 0.2s ease;
+    border: 2px solid transparent;
     border-left: 4px solid transparent;
 }
 
@@ -508,23 +508,34 @@ body {
     border-left-color: var(--accent);
     transform: translateX(4px);
     outline: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .comp-entry.active {
-    background: linear-gradient(90deg, rgba(74, 158, 255, 0.04), transparent);
-    color: var(--text-primary);
-    border-left-color: var(--accent);
+    border-color: var(--accent);
+    background: linear-gradient(90deg, rgba(74, 158, 255, 0.12), rgba(74, 158, 255, 0.04));
+    border-left: 6px solid var(--accent);
+    padding-left: 12px;
+    box-shadow: 0 4px 16px rgba(74, 158, 255, 0.25), 0 2px 8px rgba(0, 0, 0, 0.3);
+    transform: translateX(2px);
+}
+
+/* Indent compendium entries to visually separate them from category rows. */
+.compendium-panel .comp-entry {
+    margin-left: 12px;
+    margin-right: 8px;
 }
 
 .comp-entry-title {
-    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
     color: inherit;
 }
 
 .comp-entry-meta {
     font-size: 11px;
     color: var(--text-secondary);
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
 /* Compendium editor layout */
@@ -533,6 +544,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    flex: 1;
+    min-height: 100%;
 }
 
 .comp-editor-meta {
@@ -545,13 +558,15 @@ body {
 
 .comp-editor-body {
     width: 100%;
-    min-height: 240px;
+    flex: 1;
+    min-height: 260px;
     padding: 8px;
     border: 1px solid var(--border);
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     color: var(--text-primary);
     border-radius: 6px;
-    resize: vertical;
+    resize: none;
+    overflow: auto;
 }
 
 .comp-image-preview {
@@ -607,10 +622,6 @@ body {
     height: 240px !important;
 }
 
-.comp-editor-body {
-    min-height: 260px;
-}
-
 .comp-tags {
     display: flex;
     gap: 8px;
@@ -634,7 +645,7 @@ body {
 
 .tag-input {
     padding: 8px 10px;
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
     color: var(--text-primary);
     border-radius: 6px;
@@ -652,7 +663,7 @@ body {
 }
 
 .move-select {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     color: var(--text-primary);
     border: 1px solid var(--border);
     padding: 6px 8px;
@@ -748,33 +759,10 @@ body {
     transform: translateX(0);
 }
 
-/* Make the Compendium slide visually pop: subtle accent border, header accent, and shadow */
+/* Compendium panel sizing */
 .slide-panel-right.compendium-panel {
-    border-left: 1px solid rgba(74, 158, 255, 0.12);
-    box-shadow: -18px 0 40px rgba(0, 0, 0, 0.65);
-    background: linear-gradient(180deg, var(--bg-secondary), rgba(42, 42, 42, 0.97));
     /* make compendium wider to accommodate longer names and richer content */
     width: 640px;
-}
-
-.slide-panel-right.compendium-panel .slide-panel-header {
-    border-bottom: 1px solid rgba(74, 158, 255, 0.10);
-    background: linear-gradient(90deg, rgba(74, 158, 255, 0.05), rgba(42, 42, 42, 0.98));
-}
-
-.slide-panel-right.compendium-panel .slide-panel-body {
-    background: linear-gradient(180deg, var(--bg-primary), rgba(26, 26, 26, 0.98));
-}
-
-/* Slight left accent for the compendium to improve discoverability */
-.slide-panel-right.compendium-panel::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, var(--accent), rgba(74, 158, 255, 0.06));
 }
 
 /* Responsive: reduce compendium width on narrower viewports */
@@ -1608,23 +1596,11 @@ html.light-mode .backup-warning-banner,
     /* red */
 }
 
-/* Prompts panel with visual accent styling matching compendium */
+/* Prompts panel sizing */
 .slide-panel-right.prompts-panel {
     width: 700px; /* Default width, overridden by Alpine */
     min-width: 500px;
     max-width: 1200px;
-    border-left: 1px solid rgba(74, 158, 255, 0.08);
-    box-shadow: -18px 0 40px rgba(0, 0, 0, 0.55);
-    background: linear-gradient(180deg, var(--bg-secondary), rgba(74, 158, 255, 0.02));
-}
-
-.slide-panel-right.prompts-panel .slide-panel-header {
-    border-bottom: 1px solid rgba(74, 158, 255, 0.06);
-    background: linear-gradient(90deg, rgba(74, 158, 255, 0.02), transparent);
-}
-
-.slide-panel-right.prompts-panel .slide-panel-body {
-    background: linear-gradient(180deg, var(--bg-primary), rgba(74, 158, 255, 0.01));
 }
 
 /* Resize handle for prompts panel */
@@ -1643,18 +1619,6 @@ html.light-mode .backup-warning-banner,
 .prompts-resize-handle:hover,
 .prompts-resize-handle.active {
     background: linear-gradient(to bottom, var(--accent), rgba(74, 158, 255, 0.3));
-}
-
-/* Left accent stripe for the prompts panel - moved to be behind resize handle */
-.slide-panel-right.prompts-panel::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, var(--accent), rgba(74, 158, 255, 0.06));
-    pointer-events: none;
 }
 
 @media (max-width: 900px) {
@@ -1688,32 +1652,9 @@ html.light-mode .backup-warning-banner,
     border-left-color: var(--accent-blue, #60a5fa);
 }
 
-/* Summary Panel Styling - similar to compendium/prompts panels */
+/* Summary panel sizing */
 .slide-panel-right.summary-panel {
-    border-left: 1px solid rgba(74, 158, 255, 0.08);
-    box-shadow: -18px 0 40px rgba(0, 0, 0, 0.55);
-    background: linear-gradient(180deg, var(--bg-secondary), rgba(74, 158, 255, 0.02));
     width: 500px;
-}
-
-.slide-panel-right.summary-panel .slide-panel-header {
-    border-bottom: 1px solid rgba(74, 158, 255, 0.06);
-    background: linear-gradient(90deg, rgba(74, 158, 255, 0.02), transparent);
-}
-
-.slide-panel-right.summary-panel .slide-panel-body {
-    background: linear-gradient(180deg, var(--bg-primary), rgba(74, 158, 255, 0.01));
-}
-
-/* Left accent stripe for the summary panel */
-.slide-panel-right.summary-panel::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, var(--accent), rgba(74, 158, 255, 0.06));
 }
 
 @media (max-width: 900px) {

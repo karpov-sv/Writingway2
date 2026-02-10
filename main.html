@@ -1410,14 +1410,14 @@
             </div>
             <div class="slide-panel-body">
                 <div style="display:flex;flex-direction:column;height:100%;">
-                    <div style="flex:1;overflow:auto;">
+                    <div style="flex:1;min-height:0;display:flex;flex-direction:column;">
                         <!-- Tags input (scenes only) -->
                         <div x-show="summaryTargetSceneId" style="margin-bottom:12px;">
                             <label
                                 style="display:block;margin-bottom:6px;font-size:13px;color:var(--text-secondary);font-weight:600;">Tags
                                 (comma-separated)</label>
                             <input type="text" x-model="sceneTags" placeholder="e.g., chase, action, romance"
-                                style="width:100%;padding:10px 12px;background:var(--bg-primary);border:1px solid var(--border);color:var(--text-primary);border-radius:6px;font-size:14px;" />
+                                style="width:100%;padding:10px 12px;background:var(--bg-secondary);border:1px solid var(--border);color:var(--text-primary);border-radius:6px;font-size:14px;" />
                             <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;">Tags help organize
                                 and reference scenes in your context panel</div>
                         </div>
@@ -1425,7 +1425,7 @@
                             style="display:block;margin-bottom:6px;font-size:13px;color:var(--text-secondary);font-weight:600;"
                             x-text="summaryTargetChapterId ? 'Chapter Summary' : 'Scene Summary'"></label>
                         <textarea x-model="summaryText" rows="12"
-                            style="width:100%;padding:12px;background:var(--bg-primary);border:1px solid var(--border);color:var(--text-primary);border-radius:6px;resize:vertical;"></textarea>
+                            style="width:100%;flex:1;min-height:0;padding:12px;background:var(--bg-secondary);border:1px solid var(--border);color:var(--text-primary);border-radius:6px;resize:none;"></textarea>
                     </div>
 
                     <div
@@ -1499,7 +1499,7 @@
 
         <!-- AI Settings Panel -->
         <div id="ai-settings-panel" class="slide-panel-right ai-settings-panel" :class="{ 'open': showAISettings }" x-cloak
-            style="width:600px;border-left:1px solid rgba(74,158,255,0.08);box-shadow:-18px 0 40px rgba(0,0,0,0.55);">
+            style="width:600px;">
             <div class="slide-panel-header">
                 <h3 style="margin:0;">AI Configuration</h3>
                 <button class="btn btn-secondary" @click="showAISettings = false">Close</button>
@@ -2248,11 +2248,11 @@
                                 <div>
                                     <input type="text" x-model="currentCompEntry.title" placeholder="Entry title"
                                         @input="updateCompendiumDirtyFlag()"
-                                        style="width:100%;padding:8px;border:1px solid var(--border);background:var(--bg-primary);color:var(--text-primary);border-radius:6px;margin-bottom:6px;">
+                                        style="width:100%;padding:8px;border:1px solid var(--border);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-bottom:6px;">
                                 </div>
                             </template>
                         </div>
-                        <div style="flex:1;overflow:auto;">
+                        <div style="flex:1;min-height:0;display:flex;overflow:auto;">
                             <template x-if="currentCompEntry">
                                 <div class="comp-editor-vertical">
                                     <!-- Image under the title -->
@@ -2273,8 +2273,7 @@
                                     <!-- Body below the image -->
                                     <textarea x-model="currentCompEntry.body"
                                         placeholder="Write compendium entry body here" class="comp-editor-body"
-                                        @input="updateCompendiumDirtyFlag()"
-                                        style="margin-top:12px;"></textarea>
+                                        @input="updateCompendiumDirtyFlag()"></textarea>
 
                                     <!-- Tags and image remove button -->
                                     <div
