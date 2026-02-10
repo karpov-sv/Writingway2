@@ -1263,6 +1263,48 @@ html.light-mode .backup-warning-banner,
     cursor: progress;
 }
 
+.workshop-send-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.workshop-send-btn.is-generating {
+    background: rgba(74, 158, 255, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(74, 158, 255, 0.45);
+    color: var(--accent);
+}
+
+.workshop-send-btn.is-generating:disabled {
+    opacity: 1;
+    cursor: progress;
+}
+
+.rewrite-action-btn,
+.models-refresh-btn,
+.w1-import-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rewrite-action-btn.is-generating,
+.models-refresh-btn.is-generating,
+.w1-import-btn.is-generating,
+.check-updates-btn.is-generating {
+    background: rgba(74, 158, 255, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(74, 158, 255, 0.45);
+    color: var(--accent);
+}
+
+.rewrite-action-btn.is-generating:disabled,
+.models-refresh-btn.is-generating:disabled,
+.w1-import-btn.is-generating:disabled,
+.check-updates-btn.is-generating:disabled {
+    opacity: 1;
+    cursor: progress;
+}
+
 .generate-btn-spinner {
     width: 14px;
     height: 14px;

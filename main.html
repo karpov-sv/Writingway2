@@ -248,10 +248,16 @@
                                     Prompts</button>
                                 <button @click.stop="openBackupSettings(); mainMenuOpen=false">💾 Backups</button>
                                 <div style="border-top:1px solid var(--border);margin:6px 0"></div>
-                                <button @click.stop="checkForUpdates(); mainMenuOpen=false"
-                                    :disabled="checkingForUpdates">
+                                <button class="check-updates-btn" :class="{ 'is-generating': checkingForUpdates }"
+                                    @click.stop="checkForUpdates(); mainMenuOpen=false" :disabled="checkingForUpdates"
+                                    :title="checkingForUpdates ? 'Checking for updates...' : 'Check for updates'"
+                                    :aria-busy="checkingForUpdates ? 'true' : 'false'">
                                     <span x-show="!checkingForUpdates">🔄 Check for Updates</span>
-                                    <span x-show="checkingForUpdates">⏳ Checking...</span>
+                                    <span x-show="checkingForUpdates"
+                                        style="display:inline-flex;align-items:center;gap:6px;">
+                                        <span class="generate-btn-spinner" aria-hidden="true"></span>
+                                        <span>Checking...</span>
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -645,11 +651,18 @@
                                         title="Use context from Context Panel">
                                         📚
                                     </button>
-                                    <button class="btn btn-primary btn-sm"
+                                    <button class="btn btn-primary btn-sm workshop-send-btn"
+                                        :class="{ 'is-generating': workshopIsGenerating }"
                                         @click="window.workshopChat.sendMessage($data, workshopInput)"
-                                        :disabled="!workshopInput.trim() || workshopIsGenerating" style="flex:1;">
+                                        :disabled="!workshopInput.trim() || workshopIsGenerating"
+                                        :title="workshopIsGenerating ? 'Sending...' : 'Send'"
+                                        :aria-busy="workshopIsGenerating ? 'true' : 'false'" style="flex:1;">
                                         <span x-show="!workshopIsGenerating">Send</span>
-                                        <span x-show="workshopIsGenerating">...</span>
+                                        <span x-show="workshopIsGenerating"
+                                            style="display:inline-flex;align-items:center;gap:6px;">
+                                            <span class="generate-btn-spinner" aria-hidden="true"></span>
+                                            <span>Sending...</span>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -1140,9 +1153,16 @@
                     <div style="display:flex;gap:8px;margin-bottom:16px;">
                         <button class="btn btn-secondary" @click="buildRewritePrompt()"
                             :disabled="rewriteInProgress">Prompt</button>
-                        <button class="btn btn-primary" @click="performRewrite()" :disabled="rewriteInProgress">
+                        <button class="btn btn-primary rewrite-action-btn"
+                            :class="{ 'is-generating': rewriteInProgress }" @click="performRewrite()"
+                            :disabled="rewriteInProgress"
+                            :title="rewriteInProgress ? 'Rewriting selection...' : 'Rewrite'"
+                            :aria-busy="rewriteInProgress ? 'true' : 'false'">
                             <span x-show="!rewriteInProgress">Rewrite</span>
-                            <span x-show="rewriteInProgress">Rewriting...</span>
+                            <span x-show="rewriteInProgress" style="display:inline-flex;align-items:center;gap:6px;">
+                                <span class="generate-btn-spinner" aria-hidden="true"></span>
+                                <span>Rewriting...</span>
+                            </span>
                         </button>
                     </div>
 
@@ -1358,8 +1378,20 @@
                     </div>
                     <p style="margin:16px 0 8px 0;font-size:14px;color:rgba(255,255,255,0.8);">Select your Writingway 1
                         project folder:</p>
-                    <input type="file" webkitdirectory directory multiple @change="importFromW1($event)"
-                        style="margin:8px 0;padding:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:4px;color:inherit;width:100%;">
+                    <input type="file" x-ref="w1ImportInput" webkitdirectory directory multiple
+                        :disabled="w1ImportInProgress"
+                        @change="importFromW1($event); $event.target.value = null" style="display:none;">
+                    <button class="btn btn-primary w1-import-btn" :class="{ 'is-generating': w1ImportInProgress }"
+                        :disabled="w1ImportInProgress"
+                        :title="w1ImportInProgress ? 'Importing project...' : 'Select project folder to import'"
+                        :aria-busy="w1ImportInProgress ? 'true' : 'false'"
+                        @click="$refs.w1ImportInput && $refs.w1ImportInput.click()">
+                        <span x-show="!w1ImportInProgress">Select Project Folder</span>
+                        <span x-show="w1ImportInProgress" style="display:inline-flex;align-items:center;gap:6px;">
+                            <span class="generate-btn-spinner" aria-hidden="true"></span>
+                            <span>Importing...</span>
+                        </span>
+                    </button>
                     <div class="modal-buttons" style="margin-top:20px;">
                         <button class="btn btn-secondary" @click="showW1ImportModal = false"
                             :disabled="w1ImportInProgress">Cancel</button>
@@ -1573,12 +1605,17 @@
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                             <label
                                 style="display:block;font-size:13px;font-weight:600;color:var(--text-primary);">Model</label>
-                            <button class="btn btn-secondary" @click="fetchProviderModels()"
+                            <button class="btn btn-secondary models-refresh-btn"
+                                :class="{ 'is-generating': fetchingModels }" @click="fetchProviderModels()"
                                 x-show="aiProvider !== 'nanogpt' && aiProvider !== 'custom'"
                                 :disabled="(aiProvider !== 'lmstudio' && !aiApiKey) || fetchingModels" style="font-size:11px;padding:4px 8px;"
-                                title="Refresh available models from provider">
+                                :title="fetchingModels ? 'Loading models...' : 'Refresh available models from provider'"
+                                :aria-busy="fetchingModels ? 'true' : 'false'">
                                 <span x-show="!fetchingModels">🔄 Refresh</span>
-                                <span x-show="fetchingModels">⏳ Loading...</span>
+                                <span x-show="fetchingModels" style="display:inline-flex;align-items:center;gap:6px;">
+                                    <span class="generate-btn-spinner" aria-hidden="true"></span>
+                                    <span>Loading...</span>
+                                </span>
                             </button>
                         </div>
                         <!-- Model dropdown for providers with auto-discovery -->
