@@ -101,7 +101,57 @@ const path = require('path');
             process.exit(6);
         }
 
-        console.log('UI sidebar test passed: chapter expand/collapse toggles scenes and caret rotates.');
+        // Open Prompts panel and verify outside click closes it.
+        await page.click('button[title="Main Menu"]');
+        await page.click('button:has-text("Manage Prompts")');
+        await page.waitForFunction(() => {
+            const panel = document.querySelector('.prompts-panel');
+            return panel && panel.classList.contains('open');
+        }, { timeout: 5000 });
+        await page.mouse.click(24, 220);
+        await page.waitForFunction(() => {
+            const panel = document.querySelector('.prompts-panel');
+            return panel && !panel.classList.contains('open');
+        }, { timeout: 5000 });
+
+        // Open Compendium panel and verify outside click closes it.
+        await page.click('.project-name-button');
+        await page.waitForFunction(() => {
+            const panel = document.getElementById('compendium-panel');
+            return panel && panel.classList.contains('open');
+        }, { timeout: 5000 });
+        await page.mouse.click(24, 220);
+        await page.waitForFunction(() => {
+            const panel = document.getElementById('compendium-panel');
+            return panel && !panel.classList.contains('open');
+        }, { timeout: 5000 });
+
+        // Open AI Settings panel and verify outside click closes it.
+        await page.click('.ai-status .ai-status-item[role="button"]');
+        await page.waitForFunction(() => {
+            const panel = document.getElementById('ai-settings-panel');
+            return panel && panel.classList.contains('open');
+        }, { timeout: 5000 });
+        await page.mouse.click(24, 220);
+        await page.waitForFunction(() => {
+            const panel = document.getElementById('ai-settings-panel');
+            return panel && !panel.classList.contains('open');
+        }, { timeout: 5000 });
+
+        // Open Backups panel and verify outside click closes it.
+        await page.click('button[title="Main Menu"]');
+        await page.click('button:has-text("Backups")');
+        await page.waitForFunction(() => {
+            const panel = document.getElementById('backup-settings-panel');
+            return panel && panel.classList.contains('open');
+        }, { timeout: 5000 });
+        await page.mouse.click(24, 220);
+        await page.waitForFunction(() => {
+            const panel = document.getElementById('backup-settings-panel');
+            return panel && !panel.classList.contains('open');
+        }, { timeout: 5000 });
+
+        console.log('UI sidebar test passed: chapter toggle works and all floating side panels close on outside click.');
         await browser.close();
         process.exit(0);
     } catch (err) {

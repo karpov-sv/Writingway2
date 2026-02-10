@@ -1498,7 +1498,7 @@
         </div>
 
         <!-- AI Settings Panel -->
-        <div class="slide-panel-right" :class="{ 'open': showAISettings }" x-cloak
+        <div id="ai-settings-panel" class="slide-panel-right ai-settings-panel" :class="{ 'open': showAISettings }" x-cloak
             style="width:600px;border-left:1px solid rgba(74,158,255,0.08);box-shadow:-18px 0 40px rgba(0,0,0,0.55);">
             <div class="slide-panel-header">
                 <h3 style="margin:0;">AI Configuration</h3>
@@ -1859,7 +1859,7 @@
         </div>
 
         <!-- Backup Settings Panel -->
-        <div class="slide-panel-right" :class="{ 'open': showBackupSettings }" x-cloak>
+        <div id="backup-settings-panel" class="slide-panel-right backup-settings-panel" :class="{ 'open': showBackupSettings }" x-cloak>
             <div class="slide-panel-header">
                 <h3 style="margin:0;">💾 Backups</h3>
                 <button class="btn btn-secondary" @click="closeBackupSettings()">Close</button>

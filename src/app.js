@@ -226,6 +226,47 @@ document.addEventListener('alpine:init', () => {
                     }
                 });
 
+                // Close floating right panels when interacting outside of them.
+                // Use panel-specific close methods where needed to preserve guard behavior.
+                document.addEventListener('pointerdown', (e) => {
+                    try {
+                        const target = e && e.target instanceof Element ? e.target : null;
+                        if (!target) return;
+
+                        // Ignore interactions inside modal dialogs/overlays.
+                        if (
+                            target.closest('.modal-overlay') ||
+                            target.closest('.modal') ||
+                            target.closest('.modal-backdrop') ||
+                            target.closest('.modal-content')
+                        ) return;
+
+                        const closeIfOutside = (isOpen, selector, onClose) => {
+                            if (!isOpen) return;
+                            const panel = document.querySelector(selector);
+                            if (panel && !panel.contains(target)) onClose();
+                        };
+
+                        closeIfOutside(this.showPromptsPanel, '.prompts-panel', () => {
+                            this.showPromptsPanel = false;
+                        });
+                        closeIfOutside(this.showCodexPanel, '#compendium-panel', () => {
+                            this.closeCompendium();
+                        });
+                        closeIfOutside(this.showSummaryPanel, '.summary-panel', () => {
+                            this.showSummaryPanel = false;
+                        });
+                        closeIfOutside(this.showAISettings, '#ai-settings-panel', () => {
+                            this.showAISettings = false;
+                        });
+                        closeIfOutside(this.showBackupSettings, '#backup-settings-panel', () => {
+                            this.closeBackupSettings();
+                        });
+                    } catch (err) {
+                        // ignore listener errors
+                    }
+                });
+
                 // Track last mouseup target so we can ignore accidental clicks caused by selection mouseup
                 document.addEventListener('mouseup', (ev) => {
                     try {
