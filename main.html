@@ -2090,7 +2090,7 @@
                                 a new one.</div>
                             <div x-show="currentPrompt">
                                 <input type="text" x-model="currentPrompt.title"
-                                    style="width:100%;padding:8px;border:1px solid var(--border);background:var(--bg-primary);color:var(--text-primary);border-radius:6px;margin-bottom:6px;">
+                                    style="width:100%;padding:8px;border:1px solid var(--border);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-bottom:6px;">
                                 <div style="margin-bottom:6px;">
                                     <label
                                         style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:4px;">Category</label>
@@ -2116,7 +2116,7 @@
                             </div>
                             <textarea x-model="promptEditorSystemContent"
                                 placeholder="e.g., You are a creative writing assistant. Write in {tense}, from {povName}'s perspective using {pov}..."
-                                style="width:100%;height:120px;padding:8px;border:1px solid var(--accent);background:var(--bg-primary);color:var(--text-primary);border-radius:6px;resize:vertical;font-family:inherit;font-size:13px;"></textarea>
+                                style="width:100%;height:120px;padding:8px;border:1px solid var(--accent);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;resize:vertical;font-family:inherit;font-size:13px;"></textarea>
                         </div>
                         
                         <!-- User Message -->
@@ -2130,7 +2130,7 @@
                             </div>
                             <textarea x-model="promptEditorContent"
                                 :placeholder="currentPrompt && currentPrompt.category === 'prose' ? 'e.g., Expand the beat into 2-3 paragraphs. Use sensory details. Show, don\\'t tell...' : 'Enter prompt content...'"
-                                style="width:100%;flex:1;padding:8px;border:1px solid var(--border);background:var(--bg-primary);color:var(--text-primary);border-radius:6px;resize:none;font-family:inherit;font-size:13px;"></textarea>
+                                style="width:100%;flex:1;padding:8px;border:1px solid var(--border);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;resize:none;font-family:inherit;font-size:13px;"></textarea>
                         </div>
                         
                         <div style="flex:0 0 auto;display:flex;gap:8px;margin-top:12px;">

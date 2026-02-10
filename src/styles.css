@@ -526,6 +526,11 @@ body {
     margin-right: 8px;
 }
 
+/* Keep prompt list entry hover/active transforms inside the panel width. */
+.prompts-panel .comp-entry {
+    margin-right: 8px;
+}
+
 .comp-entry-title {
     font-size: 14px;
     margin-bottom: 4px;
